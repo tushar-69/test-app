@@ -3,7 +3,7 @@ import { useState } from "react";
 import { addPlayList } from '../lib/api-service';
 import Link from "next/link";
 
-export default async function AddPlayList() {
+export default function AddPlayList() {
     const [name, setName] = useState('');
     const [movies, setMovies] = useState<Array<string>>(['']);
 

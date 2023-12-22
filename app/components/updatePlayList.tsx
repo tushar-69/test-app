@@ -4,7 +4,7 @@ import IPlaylist from "../playlist/iPlaylist";
 import { updatePlayList } from "../lib/api-service";
 import Link from "next/link";
 
-export default async function UpdatePlayList(props: IPlaylist) {
+export default function UpdatePlayList(props: IPlaylist) {
     const [name, setName] = useState(props.name);
     const [movies, setMovies] = useState<Array<string>>(props.movies);
 
