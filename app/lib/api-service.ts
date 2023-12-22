@@ -1,4 +1,4 @@
-import { apiEndPoint } from "app/constants/constants";
+import { apiEndPoint } from "../constants/constants";
 import IPlaylist from "app/playlist/iPlaylist";
 
 export const getPlayLists = async () => {

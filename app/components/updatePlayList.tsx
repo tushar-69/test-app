@@ -1,10 +1,10 @@
 "use client";
 import { useState } from "react";
 import IPlaylist from "../playlist/iPlaylist";
-import { updatePlayList } from "app/lib/api-service";
+import { updatePlayList } from "../lib/api-service";
 import Link from "next/link";
 
-export default function UpdatePlayList(props: IPlaylist) {
+export default async function UpdatePlayList(props: IPlaylist) {
     const [name, setName] = useState(props.name);
     const [movies, setMovies] = useState<Array<string>>(props.movies);
 

@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { addPlayList } from "app/lib/api-service";
+import { addPlayList } from '../lib/api-service';
 import Link from "next/link";
 
 export default async function AddPlayList() {
@@ -9,9 +9,7 @@ export default async function AddPlayList() {
 
     const handleSubmit = async (e: any) => {
         e.preventDefault();
-
         const data = await addPlayList({name: name, movies: movies});
-
         if (data?.id) {
             alert('Playlist added successfully');
         } else {
@@ -19,7 +17,7 @@ export default async function AddPlayList() {
         }
     }
 
-    const handleChange = (e: any, i: number)=>{
+    const handleChange = (e: any, i: number) => {
         const {value}=e.target
         const onchangeVal = [...movies]
         onchangeVal[i]=value

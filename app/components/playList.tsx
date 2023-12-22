@@ -1,5 +1,5 @@
-import GridAction from "app/components/gridAction";
-import { getPlayLists } from "app/lib/api-service";
+import GridAction from "../components/gridAction";
+import { getPlayLists } from "../lib/api-service";
 import IPlaylist from "app/playlist/iPlaylist";
 
 export default async function PlayList () {
@@ -8,13 +8,13 @@ export default async function PlayList () {
     if (playLists.length === 0) return <h2> there are no playlist in the Database </h2>;
     return (
       <>
-      <h2 data-test-id="title">PlayList</h2>
+      <h2>PlayList</h2>
         <div className="container">
           <table className="table">
-            <thead><tr><th>Title</th><th>Movies</th><th>Update / Delete</th></tr></thead>
-            <tbody>
+            <thead role='thead'><tr><th>Title</th><th>Movies</th><th>Update / Delete</th></tr></thead>
+            <tbody role='tbody'>
               {playLists?.map((post) => (
-                <tr key={post.id}>
+                <tr role='tr' key={post.id}>
                   <td > {post.name} </td>
                   <td>{post.movies.map((movie, i) => (
                     <li key={i}>{movie}</li>

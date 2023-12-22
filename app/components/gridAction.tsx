@@ -1,5 +1,5 @@
 "use client"
-import { deletePlayList } from 'app/lib/api-service';
+import { deletePlayList } from '../lib/api-service';
 import IPlaylist from 'app/playlist/iPlaylist';
 import React from 'react'
 import { useRouter } from 'next/navigation'
@@ -8,8 +8,8 @@ const GridAction = (playList: IPlaylist) => {
     const router = useRouter();
 
     const handleDelete = async (id: string) => {
-        // to be optimized
         await deletePlayList(id);
+        alert('playlist deleted successfully');
     };
 
   return (
