@@ -41,6 +41,7 @@ export default function UpdatePlayList(props: IPlaylist) {
                     name="Name"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
+                    placeholder="Add a new movie here..."
                 />
             </label>
 

@@ -1,5 +1,5 @@
 import AddPlayList from '@/app/components/addPlayList';
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import IPlaylist from '@/app/playlist/iPlaylist';
 import { faker } from "@faker-js/faker";
@@ -58,5 +58,28 @@ describe('Add PlayList', () => {
 
         const movieElements = screen.getAllByLabelText(/Movie/i);
         expect(movieElements.length).toBeGreaterThanOrEqual(1);
-      });
+    });
+
+    it("should add a movie on click of add movie button", async () => {
+        const component = await AddPlayList();
+        render(component);
+
+        const inputElements = await screen.findAllByPlaceholderText(/Add a new movie here.../i);
+        fireEvent.click(inputElements[inputElements.length - 1])
+        fireEvent.change(inputElements[inputElements.length - 1], { target: { value: faker.string.alphanumeric() } });
+
+        const buttonElement = screen.getByRole("button", { name: /Add Movie/i} );
+        fireEvent.click(buttonElement);
+        expect(setStateMock).toHaveBeenCalled();
+    });
+
+    it("should remove a movie on click of remove movie button", async () => {
+        const component = await AddPlayList();
+        render(component);
+
+        const buttonElements = await screen.findAllByRole("button", { name: /Remove Movie/i} );
+        fireEvent.click(buttonElements[0]);
+        expect(setStateMock).toHaveBeenCalled();
+    });
+
 })

@@ -1,5 +1,5 @@
 import UpdatePlayList from '../../../app/components/updatePlayList';
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import IPlaylist from '@/app/playlist/iPlaylist';
 import { faker } from "@faker-js/faker";
@@ -48,14 +48,25 @@ describe('Update PlayList', () => {
         expect(elements.length).toBeGreaterThanOrEqual(3);
     })
 
-    it("should have name & movie elements in the form", async () => {
+    it("should add a movie on click of add movie button", async () => {
         const component = await UpdatePlayList(playList);
         render(component);
 
-        const labelElement = screen.getByLabelText(/Name/i);
-        expect(labelElement).toBeInTheDocument();
+        const inputElements = await screen.findAllByPlaceholderText(/Add a new movie here.../i);
+        fireEvent.click(inputElements[inputElements.length - 1])
+        fireEvent.change(inputElements[inputElements.length - 1], { target: { value: faker.string.alphanumeric() } });
 
-        const movieElements = screen.getAllByLabelText(/Movie/i);
-        expect(movieElements.length).toBeGreaterThanOrEqual(1);
-      });
+        const buttonElement = screen.getByRole("button", { name: /Add Movie/i} );
+        fireEvent.click(buttonElement);
+        expect(setStateMock).toHaveBeenCalled();
+    });
+
+    it("should remove a movie on click of remove movie button", async () => {
+        const component = await UpdatePlayList(playList);
+        render(component);
+
+        const buttonElements = await screen.findAllByRole("button", { name: /Remove Movie/i} );
+        fireEvent.click(buttonElements[0]);
+        expect(setStateMock).toHaveBeenCalled();
+    });
 })

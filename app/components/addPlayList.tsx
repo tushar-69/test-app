@@ -55,6 +55,7 @@ export default function AddPlayList() {
                             name="movie"
                             value={movie}
                             onChange={(e)=>handleChange(e,index)}
+                            placeholder="Add a new movie here..."
                         />
                     </label>
                     <button type="button" onClick={() => handleRemoveMovie(index)}>
