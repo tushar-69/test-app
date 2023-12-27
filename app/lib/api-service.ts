@@ -1,5 +1,6 @@
-import { apiEndPoint } from "../constants/constants";
 import IPlaylist from "app/playlist/iPlaylist";
+
+const apiEndPoint = process.env.apiEndpoint || 'http://localhost:5213/playlist';
 
 export const getPlayLists = async () => {
     const res = await fetch(apiEndPoint, { cache: 'no-store' });

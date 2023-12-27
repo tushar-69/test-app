@@ -2,7 +2,6 @@ import GridAction from '../../../app/components/gridAction';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { deletePlayList } from '../../../app/lib/api-service';
 import { useRouter } from 'next/router';
-import { apiEndPoint } from '@/app/constants/constants';
 import { playList } from '../../../__fixtures__/playlistResponse';
 import '@testing-library/jest-dom';
 import { faker } from '@faker-js/faker';
