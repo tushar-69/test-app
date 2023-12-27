@@ -16,9 +16,9 @@ export default function UpdatePlayList(props: IPlaylist) {
 
     const handleChange = (e: any, i: number)=>{
         const {value}=e.target
-        const onchangeVal = [...movies]
-        onchangeVal[i]=value
-        setMovies(onchangeVal)
+        const updatedMovies = [...movies]
+        updatedMovies[i]=value
+        setMovies(updatedMovies)
     }
 
     const handleRemoveMovie = (index: number) => {
@@ -34,14 +34,14 @@ export default function UpdatePlayList(props: IPlaylist) {
     return(
         <>
         <Link href={'/'}>PlayList</Link>
-        <form onSubmit={(e) => handleSubmit(e)}>
+        <form data-testid="formUpdatePlayList" onSubmit={(e) => handleSubmit(e)}>
             <label>Name : 
                 <input
+                    data-testid="txtName"
                     type="text"
                     name="Name"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    placeholder="Add a new movie here..."
                 />
             </label>
 
@@ -49,22 +49,24 @@ export default function UpdatePlayList(props: IPlaylist) {
                 <div key={index}>
                     <label>Movie : 
                         <input
+                            data-testid={`txtMovie-${index}`}
                             type="text"
+                            name="movie"
                             value={movie}
                             onChange={(e)=>handleChange(e,index)}
                         />
                     </label>
-                    <button type="button" onClick={() => handleRemoveMovie(index)}>
+                    <button data-testid={`btnRemoveMovie-${index}`} type="button" onClick={() => handleRemoveMovie(index)}>
                         Remove Movie
                     </button>
                 </div>
             ))}
 
-            <button type="button" onClick={() => handleAddMovie()}>
+            <button data-testid="btnAddMovie" type="button" onClick={() => handleAddMovie()}>
                 Add Movie
             </button>
 
-            <button type="submit">Submit</button>
+            <button data-testid="btnSubmit" type="submit">Submit</button>
         </form>
         </>
     )

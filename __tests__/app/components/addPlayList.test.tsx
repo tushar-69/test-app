@@ -1,85 +1,86 @@
 import AddPlayList from '@/app/components/addPlayList';
 import { render, screen, fireEvent } from '@testing-library/react';
-import '@testing-library/jest-dom';
-import IPlaylist from '@/app/playlist/iPlaylist';
 import { faker } from "@faker-js/faker";
-import { addPlayList } from '../../../app/lib/api-service';
 import React from 'react';
+import { playList } from '../../../__fixtures__/playlistResponse';
+import '@testing-library/jest-dom';
 
-    
-jest.mock('../../../app/lib/api-service', () => ({
-    addPlayList: jest.fn()
-}));
+global.fetch = jest.fn().mockResolvedValue({
+    ok: true,
+    json: () => Promise.resolve(playList)
+  });
 
 describe('Add PlayList', () => {
     afterAll(() => {
         jest.clearAllMocks();
     });
-
-    const playList: IPlaylist = { 
-        id: faker.string.alphanumeric(),
-        name: faker.string.alphanumeric(), 
-        movies: [faker.string.alphanumeric()]
-    };
     
-    (addPlayList as jest.Mock).mockResolvedValue(playList);
-
-    const setStateMock = jest.fn();
+    const setNameMock = jest.fn();
+    const setMoviesMock = jest.fn();
 
     beforeEach(() => {
         jest
         .spyOn(React, "useState")
-        .mockReturnValueOnce([faker.string.alphanumeric(), setStateMock])
-        .mockReturnValueOnce([[faker.string.alphanumeric(), faker.string.alphanumeric()], setStateMock])
+        .mockReturnValueOnce([faker.string.alphanumeric(), setNameMock])
+        .mockReturnValueOnce([faker.helpers.multiple(() => faker.string.alphanumeric()), setMoviesMock])
     })
 
-    it('should have link element for playlist', async () => {
-        const component = await AddPlayList();
-        render(component);
+    it('should have link element for playlist', () => {
+        render(<AddPlayList />);
 
         const element = screen.getByRole('link');
         expect(element).toBeInTheDocument();
     })
 
     it('should have button elements for submitting playlist & adding / removing movies', async () => {
-        const component = await AddPlayList();
-        render(component);
+        render(<AddPlayList />);
 
-        const elements = screen.getAllByRole('button');
-        expect(elements.length).toBeGreaterThanOrEqual(3);
+        const buttonAddElement = screen.getByTestId('btnAddMovie');
+        expect(buttonAddElement).toBeInTheDocument();
+
+        const buttonRemoveElement = screen.getByTestId('btnRemoveMovie-0');
+        expect(buttonRemoveElement).toBeInTheDocument();
+
+        const buttonSubmitElement = screen.getByTestId('btnSubmit');
+        expect(buttonSubmitElement).toBeInTheDocument();
     })
 
     it("should have name & movie elements in the form", async () => {
-        const component = await AddPlayList();
-        render(component);
+        render(<AddPlayList />);
 
         const labelElement = screen.getByLabelText(/Name/i);
         expect(labelElement).toBeInTheDocument();
 
         const movieElements = screen.getAllByLabelText(/Movie/i);
-        expect(movieElements.length).toBeGreaterThanOrEqual(1);
+        expect(movieElements.length).toBe(3);
     });
 
     it("should add a movie on click of add movie button", async () => {
-        const component = await AddPlayList();
-        render(component);
+        render(<AddPlayList />);
 
-        const inputElements = await screen.findAllByPlaceholderText(/Add a new movie here.../i);
-        fireEvent.click(inputElements[inputElements.length - 1])
-        fireEvent.change(inputElements[inputElements.length - 1], { target: { value: faker.string.alphanumeric() } });
-
-        const buttonElement = screen.getByRole("button", { name: /Add Movie/i} );
+        const buttonElement = screen.getByTestId("btnAddMovie");
         fireEvent.click(buttonElement);
-        expect(setStateMock).toHaveBeenCalled();
+        expect(setMoviesMock).toHaveBeenCalled();
+
+        const inputElement = await screen.getByTestId("txtMovie-1");
+        fireEvent.click(inputElement)
+        fireEvent.change(inputElement, { target: { value: faker.string.alphanumeric() } });
     });
 
     it("should remove a movie on click of remove movie button", async () => {
-        const component = await AddPlayList();
-        render(component);
+        render(<AddPlayList />);
 
-        const buttonElements = await screen.findAllByRole("button", { name: /Remove Movie/i} );
-        fireEvent.click(buttonElements[0]);
-        expect(setStateMock).toHaveBeenCalled();
+        const buttonElement = await screen.getByTestId("btnRemoveMovie-0");
+        fireEvent.click(buttonElement);
+        expect(setMoviesMock).toHaveBeenCalled();
     });
 
+    // it("should submit the form", async () => {
+    //     const handleOnSubmitMock = jest.fn();
+
+    //     const component = await AddPlayList();
+    //     render(component);
+
+    //     fireEvent.click(screen.getByTestId("formAddPlayList"));
+    // });
 })

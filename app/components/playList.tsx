@@ -10,7 +10,7 @@ export default async function PlayList () {
       <>
       <h2>PlayList</h2>
         <div className="container">
-          <table className="table">
+          <table data-testid="tblPlaylist" className="table">
             <thead role='thead'><tr><th>Title</th><th>Movies</th><th>Update / Delete</th></tr></thead>
             <tbody role='tbody'>
               {playLists?.map((post) => (

@@ -1,19 +1,9 @@
 import { getPlayLists, getPlayListById, addPlayList, deletePlayList, updatePlayList } from "@/app/lib/api-service";
-import IPlaylist from '@/app/playlist/iPlaylist';
 import { faker } from "@faker-js/faker";
+import { playList, playLists } from "../../../__fixtures__/playlistResponse";
 
 describe('API Service', () => {
     it('should fetch playlist successfully', async () => {
-        const playLists: Array<IPlaylist> = [{ 
-            id: faker.string.alphanumeric(),
-            name: faker.string.alphanumeric(), 
-            movies: [faker.string.alphanumeric()]
-        },{ 
-            id: faker.string.alphanumeric(),
-            name: faker.string.alphanumeric(), 
-            movies: [faker.string.alphanumeric()]
-        }];
-        
         global.fetch = jest.fn().mockResolvedValue({
             ok: true,
             json: () => Promise.resolve(playLists)
@@ -24,12 +14,6 @@ describe('API Service', () => {
     })
 
     it('should fetch playlist by id successfully', async () => {
-        const playList: IPlaylist = { 
-            id: faker.string.alphanumeric(),
-            name: faker.string.alphanumeric(), 
-            movies: [faker.string.alphanumeric()]
-        };
-        
         global.fetch = jest.fn().mockResolvedValue({
             ok: true,
             json: () => Promise.resolve(playList)
@@ -40,12 +24,6 @@ describe('API Service', () => {
     })
 
     it('should add playlist successfully', async () => {
-        const playList: IPlaylist = { 
-            id: faker.string.alphanumeric(),
-            name: faker.string.alphanumeric(), 
-            movies: [faker.string.alphanumeric()]
-        };
-        
         global.fetch = jest.fn().mockResolvedValue({
             ok: true,
             json: () => Promise.resolve(playList)
@@ -56,12 +34,6 @@ describe('API Service', () => {
     })
 
     it('should update playlist successfully', async () => {
-        const playList: IPlaylist = { 
-            id: faker.string.alphanumeric(),
-            name: faker.string.alphanumeric(), 
-            movies: [faker.string.alphanumeric()]
-        };
-        
         global.fetch = jest.fn().mockResolvedValue({
             ok: true,
             json: () => Promise.resolve()

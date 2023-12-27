@@ -1,13 +1,12 @@
 import PlayList from '../../../app/components/playList';
 import { render, screen } from '@testing-library/react';
+import { playLists } from '../../../__fixtures__/playlistResponse';
 import '@testing-library/jest-dom';
-import IPlaylist from '@/app/playlist/iPlaylist';
-import { faker } from "@faker-js/faker";
-import { getPlayLists } from '../../../app/lib/api-service';
 
-jest.mock('../../../app/lib/api-service', () => ({
-    getPlayLists: jest.fn()
-}));
+global.fetch = jest.fn().mockResolvedValue({
+    ok: true,
+    json: () => Promise.resolve(playLists)
+  });
 
 jest.mock("../../../app/components/gridAction", () => () => {
     return <td />;
@@ -17,18 +16,6 @@ describe('playlist', () => {
     afterAll(() => {
         jest.clearAllMocks();
     });
-
-    const playLists: Array<IPlaylist> = [{ 
-        id: faker.string.alphanumeric(),
-        name: faker.string.alphanumeric(), 
-        movies: [faker.string.alphanumeric()]
-    },{ 
-        id: faker.string.alphanumeric(),
-        name: faker.string.alphanumeric(), 
-        movies: [faker.string.alphanumeric()]
-    }];
-
-    (getPlayLists as jest.Mock).mockResolvedValue(playLists);
 
     it('should contain title playlist', async () => {
         const component = await PlayList();
@@ -42,7 +29,7 @@ describe('playlist', () => {
         const component = await PlayList();
         render(component);
 
-        const tableElement = screen.getByRole('table');
+        const tableElement = screen.getByTestId('tblPlaylist');
         expect(tableElement).toBeInTheDocument();
 
         const tableHeader = screen.getByRole('thead');
